@@ -128,8 +128,9 @@ function pai_menu_build($menu, $conf, $name = '') {
 	
 	
 	$menu = sortObjByField($menu, 'order');
+	$ulClass = pai_conf('plugins', 'menu', 'ulClass');
 	
-	$html = ($name ? '<ul id="pai_menu-'.$name.'">' : '<ul>');
+	$html = ($name ? '<ul id="pai_menu-'.$name.'" class="'.$ulClass.'">' : '<ul>');
 	foreach($menu AS $page => $item) {
 		$classess = array('pai_menu-page-'.str_replace('/', '_', $page));
 		if ($item->isCurrent()) { $classess[] = (isset($conf['currentClass']) ? $conf['currentClass'] : 'pai_menu-current'); }
