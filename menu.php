@@ -130,16 +130,26 @@ function pai_menu_build($menu, $conf, $name = '') {
 	$menu = sortObjByField($menu, 'order');
 	$class = pai_conf('plugins', 'menu', 'ulclass');
 
-	$html = ($name ? '<ul id="pai_menu-'.$name.'" class="'.$class.'">' : '<ul>');
+	$html = ($name ? '<ul id="pai_menu-'.$name.'" class="'.$class.'">' : '<ul class="dropdown-menu">');
 	foreach($menu AS $page => $item) {
 		$classess = array('pai_menu-page-'.str_replace('/', '_', $page));
+		
+		if(count($item->children)) {
+      array_push($classess, 'dropdown');
+      $dropdown = ' class="dropdown-toggle" data-toggle="dropdown"';
+      $dropdowncaret = ' <b class="caret"></b>';
+		}
+		
 		if ($item->isCurrent()) { $classess[] = (isset($conf['currentClass']) ? $conf['currentClass'] : 'pai_menu-current'); }
 		if ($item->isChildCurrent()) { $classess[] = (isset($conf['currentChildClass']) ? $conf['currentChildClass'] : 'pai_menu-child_current'); }
 		
-		$html .= '<li class="'.implode(' ', $classess).'"><a href="'.PAI_PATH.($page == $rootElement ? '' : $page).'">'.$item->text.'</a>';
+		$html .= '<li class="'.implode(' ', $classess).'"><a href="'.PAI_PATH.($page == $rootElement ? '' : $page).'"'.@$dropdown.'>'.$item->text.@$dropdowncaret.'</a>';
 		
 		if (count($item->children)) {
 			$html .= pai_menu_build($item->children, $conf);
+			
+			$dropdown = null;
+			$dropdowncaret = null;
 		}
 		
 		$html .= '</li>';
