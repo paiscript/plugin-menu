@@ -149,7 +149,7 @@ function pai_menu_build($menu, $conf, $name = '') {
 
 		$html .= '<li class="'.implode(' ', $classess).'"><a href="'.PAI_PATH.($page == $rootElement ? '' : $page).'"'.@$dropdown.'>'.@$icon.$item->text.@$dropdowncaret.'</a>';
 
-		if (count($item->children)) {
+		if (count($item->children) AND !$conf['childDisabled']) {
 			$html .= pai_menu_build($item->children, $conf);
 
 			$dropdown = null;
